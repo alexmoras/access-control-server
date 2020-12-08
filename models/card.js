@@ -1,19 +1,22 @@
 let mongoose = require('mongoose');
-import { v4 as uuidv4 } from 'uuid';
+const { v4: uuidv4 } = require('uuid');
 
 // Main auth section for the access system
 
 let cardSchema = mongoose.Schema({
-    uuid: {
+    _id: {
         type: String,
-        unique: true,
         default: () => {
-            return uuid.v4()
+            return uuidv4()
         }
     },
     description: {
         type: String
+    },
+    enabled: {
+        type: Boolean,
+        default: true
     }
-}, { _id : false });
+});
 
 module.exports = mongoose.model("Card", cardSchema);

@@ -1,14 +1,13 @@
 let mongoose = require('mongoose');
-import { v4 as uuidv4 } from 'uuid';
+const { v4: uuidv4 } = require('uuid');
 
 // Links organisation user to cards
 
 let userSchema = mongoose.Schema({
-    uuid: {
+    _id: {
         type: String,
-        unique: true,
         default: () => {
-            return uuid.v4()
+            return uuidv4()
         }
     },
     username: {
@@ -16,9 +15,12 @@ let userSchema = mongoose.Schema({
         unique: true
     },
     cards: {
-        type: [mongoose.Schema.Types.ObjectId],
+        type: [String],
         ref: "Card"
+    },
+    offline: {
+        type: Boolean
     }
-}, { _id : false });
+});
 
 module.exports = mongoose.model("User", userSchema);

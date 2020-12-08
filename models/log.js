@@ -1,14 +1,13 @@
 let mongoose = require('mongoose');
-import { v4 as uuidv4 } from 'uuid';
+const { v4: uuidv4 } = require('uuid');
 
 // Records all card swipes in an immutable format
 
 let logSchema = mongoose.Schema({
-    uuid: {
+    _id: {
         type: String,
-        unique: true,
         default: () => {
-            return uuid.v4()
+            return uuidv4()
         }
     },
     card: {
@@ -29,6 +28,6 @@ let logSchema = mongoose.Schema({
     timestamp: {
         type: Date
     },
-}, { _id : false });
+});
 
 module.exports = mongoose.model("Log", logSchema);

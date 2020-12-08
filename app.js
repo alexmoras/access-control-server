@@ -5,12 +5,18 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
+const session = require('express-session');
 const config = require('./config');
 
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+const authRouter = require('./routes/auth');
+const cardsResourceRouter = require('./routes/resources/cards');
+const clientsResourceRouter = require('./routes/resources/clients');
+//const usersResourceRouter = require('./routes/resources/users');
+const checkRouter = require('./routes/check');
+//const logRouter = require('./routes/log');
 
 const app = express();
+app.use(session({ secret: config.session }));
 
 const dbUrl = "mongodb+srv://" + config.database.user + ":" + config.database.pass + "@" + config.database.host +
     "/" + config.database.name;
@@ -33,8 +39,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+//app.use('/', indexRouter);
+app.use('/auth', authRouter);
+app.use('/cards', cardsResourceRouter);
+app.use('/clients', clientsResourceRouter);
+//app.use('/users', usersResourceRouter);
+app.use('/check', checkRouter);
+//app.use('/log', logRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,19 +1,21 @@
 let mongoose = require('mongoose');
-import { v4 as uuidv4 } from 'uuid';
+const { v4: uuidv4 } = require('uuid');
 
 // Allows clients to authorise and gives a description for the log
 
 let clientSchema = mongoose.Schema({
-    uuid: {
+    _id: {
         type: String,
-        unique: true,
         default: () => {
-            return uuid.v4()
+            return uuidv4()
         }
+    },
+    secret: {
+        type: String
     },
     description: {
         type: String
     }
-}, { _id : false });
+});
 
 module.exports = mongoose.model("Client", clientSchema);
